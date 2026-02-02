@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Kalkulator WARUNG BEEPEL</title>
+<title>Calculator WARUNG BEEPEL</title>
 <style>
 * {
     margin: 0;
@@ -80,6 +80,28 @@ body::before {
     opacity: 0.9;
     transition: all 0.3s ease;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    /* Animasi spin vertikal (flip 3D) */
+    animation: spinVertical 3s linear infinite;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+}
+
+@keyframes spinVertical {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes spinVerticalHover {
+    0% {
+        transform: rotateY(0deg) scale(1.1);
+    }
+    100% {
+        transform: rotateY(360deg) scale(1.1);
+    }
 }
 
 .logo-left {
@@ -93,8 +115,9 @@ body::before {
 .logo-left:hover,
 .logo-right:hover {
     opacity: 1;
-    transform: scale(1.1);
     filter: drop-shadow(0 6px 12px rgba(255, 20, 147, 0.6));
+    /* Animasi hover lebih cepat dengan scale */
+    animation: spinVerticalHover 1.5s linear infinite;
 }
 
 @media screen and (max-width: 768px) {
