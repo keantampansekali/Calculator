@@ -1169,17 +1169,27 @@ const bgRight = document.getElementById('bgRight');
 // 3. Paste URL di bawah
 // ============================================
 
-// GANTI DENGAN URL FOTO ANDA:
-const foto1Url = 'https://imgur.com/PeCGE83'; // Ganti dengan URL foto pertama
-const foto2Url = 'https://imgur.com/mrsDWtQ'; // Ganti dengan URL foto kedua
+// ============================================
+// CARA DAPATKAN DIRECT LINK YANG BENAR:
+// ============================================
+// 1. Buka https://imgur.com/PeCGE83 di browser
+// 2. Klik kanan pada foto → "Copy image address"
+//    ATAU klik foto → klik kanan → "Open image in new tab" → copy URL dari tab baru
+// 3. URL yang benar: https://i.imgur.com/PeCGE83.png (ada "i." di depan dan ekstensi .png/.jpg)
+// 4. Ulangi untuk foto kedua: https://imgur.com/mrsDWtQ
+// ============================================
+
+// PASTE DIRECT LINK YANG BENAR DI SINI (harus ada "i." dan ekstensi file):
+const foto1Url = 'https://i.imgur.com/PeCGE83.png'; // Ganti dengan direct link yang benar
+const foto2Url = 'https://i.imgur.com/mrsDWtQ.jpg'; // Ganti dengan direct link yang benar
 
 // Set background dengan URL
-if (foto1Url && foto1Url !== 'https://imgur.com/PeCGE83') {
+if (foto1Url && foto1Url.includes('i.imgur.com')) {
     bgLeft.style.backgroundImage = `url('${foto1Url}')`;
     localStorage.setItem('bgLeft', foto1Url);
 }
 
-if (foto2Url && foto2Url !== 'https://imgur.com/mrsDWtQ') {
+if (foto2Url && foto2Url.includes('i.imgur.com')) {
     bgRight.style.backgroundImage = `url('${foto2Url}')`;
     localStorage.setItem('bgRight', foto2Url);
 }
