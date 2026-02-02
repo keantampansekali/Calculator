@@ -15,6 +15,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -234,7 +235,7 @@ select {
     cursor: pointer;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
 }
@@ -254,7 +255,7 @@ input[type="number"] {
     appearance: textfield;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
 }
@@ -344,9 +345,12 @@ button {
     justify-content: center;
     white-space: nowrap;
     text-overflow: clip;
-    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.3);
+    -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 button:not(.btn-add) {
@@ -527,6 +531,10 @@ button:not(.btn-add) {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 6px rgba(255, 20, 147, 0.3);
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .btn-delete:hover {
@@ -635,7 +643,7 @@ button:not(.btn-add) {
     cursor: text;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     min-height: 44px;
 }
