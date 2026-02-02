@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator WARUNG BEEPEL</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000000;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 20, 147, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 182, 193, 0.08) 0%, transparent 50%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 20, 147, 0.03) 2px, rgba(255, 20, 147, 0.03) 4px);
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.box {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 
+        0 0 30px rgba(255, 20, 147, 0.3),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 3px rgba(255, 20, 147, 0.1);
+    color: #000;
+    position: relative;
+    z-index: 1;
+    border: 2px solid rgba(255, 20, 147, 0.2);
+    animation: boxGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes boxGlow {
+    0% { box-shadow: 0 0 30px rgba(255, 20, 147, 0.3), 0 20px 60px rgba(0, 0, 0, 0.5); }
+    100% { box-shadow: 0 0 50px rgba(255, 20, 147, 0.5), 0 20px 60px rgba(0, 0, 0, 0.5); }
+}
+
+h2 {
+    text-align: center;
+    color: #000;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #ff1493, transparent);
+    border-radius: 2px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #000;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+select {
+    width: 100%;
+    padding: 14px 18px;
+    margin: 8px 0 20px 0;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="number"] {
+    padding: 14px 18px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+    cursor: text;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+select:hover {
+    border-color: #ff1493;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2), 0 4px 12px rgba(255, 20, 147, 0.3);
+    transform: translateY(-2px);
+}
+
+select:focus {
+    outline: none;
+    border-color: #ff1493;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3), 0 4px 12px rgba(255, 20, 147, 0.4);
+}
+
+.total {
+    margin-top: 25px;
+    padding: 22px;
+    font-size: 26px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 50%, #ff1493 100%);
+    border-radius: 15px;
+    font-weight: 800;
+    box-shadow: 
+        0 0 20px rgba(255, 20, 147, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.total::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.total:hover {
+    transform: scale(1.03);
+    box-shadow: 
+        0 0 30px rgba(255, 20, 147, 0.7),
+        0 10px 25px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+button {
+    width: 100%;
+    padding: 14px 24px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    text-overflow: clip;
+}
+
+button:not(.btn-add) {
+    overflow: hidden;
+}
+
+.btn-add {
+    overflow: visible !important;
+}
+
+.btn-add {
+    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+    color: #ffffff !important;
+    box-shadow: 
+        0 4px 15px rgba(255, 20, 147, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+    font-weight: 800;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 8px rgba(255, 255, 255, 0.4);
+    z-index: 1;
+    min-height: 50px;
+    line-height: 1.4;
+    overflow: visible !important;
+    text-overflow: clip;
+}
+
+.btn-add::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.btn-add > *,
+.btn-add span {
+    position: relative;
+    z-index: 10;
+    color: #ffffff !important;
+    font-weight: 800;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 8px rgba(255, 255, 255, 0.4);
+    display: inline-block;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.btn-add:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 6px 20px rgba(255, 20, 147, 0.6),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #fff !important;
+}
+
+.btn-add:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-add:active {
+    transform: translateY(-1px);
+    color: #fff !important;
+}
+
+.btn-clear {
+    background: #000;
+    color: #fff;
+    margin-top: 15px;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 20, 147, 0.3);
+}
+
+.btn-clear:hover {
+    background: #1a1a1a;
+    transform: translateY(-3px);
+    box-shadow: 
+        0 6px 20px rgba(255, 20, 147, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    border-color: #ff1493;
+}
+
+.btn-clear:active {
+    transform: translateY(-1px);
+}
+
+.cart-container {
+    margin-top: 25px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    background: #000;
+    padding: 15px 18px;
+    margin: 10px 0;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #ff1493;
+    border: 2px solid rgba(255, 20, 147, 0.3);
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    border-color: #ff1493;
+    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.4);
+    transform: translateX(5px);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-name {
+    font-weight: 700;
+    color: #fff;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cart-item-detail {
+    font-size: 13px;
+    color: #ff69b4;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+.cart-item-price {
+    font-weight: 800;
+    color: #ff1493;
+    font-size: 16px;
+    margin-right: 12px;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+}
+
+.btn-delete {
+    background: #ff1493;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(255, 20, 147, 0.3);
+}
+
+.btn-delete:hover {
+    background: #ff69b4;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.5);
+}
+
+.btn-delete:active {
+    transform: scale(0.98);
+}
+
+.empty-cart {
+    text-align: center;
+    color: #666;
+    padding: 25px;
+    font-style: italic;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    border: 2px dashed rgba(255, 20, 147, 0.2);
+}
+
+.cart-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cart-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.cart-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff1493, #ff69b4);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+}
+
+.cart-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff69b4, #ff1493);
+}
+
+.input-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    align-items: stretch;
+    position: relative;
+}
+
+.input-group .btn-add {
+    width: auto !important;
+    min-width: 140px;
+    flex-shrink: 0;
+    padding: 14px 24px;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.input-group input[type="number"] {
+    flex: 1;
+    margin: 0 !important;
+    width: auto !important;
+    cursor: text !important;
+    pointer-events: auto !important;
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    z-index: 10;
+    position: relative;
+    background: #fff !important;
+    border: 2px solid #000 !important;
+}
+
+.input-group input[type="number"]:hover {
+    border-color: #ff1493 !important;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2), 0 4px 12px rgba(255, 20, 147, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
+.input-group input[type="number"]:focus {
+    outline: none !important;
+    border-color: #ff1493 !important;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3), 0 4px 12px rgba(255, 20, 147, 0.4) !important;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>WARUNG BEEPEL</h2>
+
+<label>Pilih Item:</label>
+<select id="item">
+<option value="0">Pilih Item</option>
+
+<option value="7000">PISTOL KACANG</option>
+<option value="10000">PISTOL P.50</option>
+<option value="27500">TEC-9</option>
+<option value="30000">PISTOL CERAMIC</option>
+<option value="30000">MINI SMG</option>
+<option value="33000">X17</option>
+<option value="35000">MICRO SMG</option>
+<option value="40000">SMG LARAS</option>
+<option value="65000">NAVY REVOLVER</option>
+<option value="65000">SHOTGUN</option>
+<option value="78000">KVR</option>
+<option value="92500">BLACK REVOLVER</option>
+<option value="180000">ASSAULT RIFLE</option>
+<option value="175000">Virtus</option>
+
+<option value="900">AMMO .50</option>
+<option value="2700">AMMO 9MM</option>
+<option value="6500">AMMO .44</option>
+<option value="6500">AMMO .45</option>
+<option value="6500">AMMO RIFLE</option>
+<option value="6500">AMMO SHOTGUN</option>
+
+<option value="2000">VEST MERAH</option>
+<option value="3000">VEST BIRU</option>
+
+<option value="500">WEED BAG</option>
+<option value="700">METH BAG</option>
+<option value="800">COCCAINE</option>
+
+<option value="5900">TACTICAL FLASHLIGHT</option>
+<option value="5900">GRIP</option>
+<option value="5900">EXT. PISTOL CLIP</option>
+<option value="5900">MACRO SCOPE</option>
+<option value="5900">MEDIUM SCOPE</option>
+<option value="8500">EXT. SMG CLIP</option>
+<option value="15000">SUPPRESOR</option>
+<option value="15000">TACTICAL SUPPRESOR</option>
+<option value="15000">SMG DRUM</option>
+<option value="21500">EXT. RIFLE CLIP</option>
+<option value="28000">RIFLE DRUM</option>
+</select>
+
+<label for="qty">Jumlah:</label>
+<div class="input-group">
+    <input type="number" id="qty" name="qty" value="1" min="1" step="1" required autocomplete="off" inputmode="numeric" tabindex="0" style="pointer-events: auto; user-select: text; -webkit-user-select: text;">
+    <button type="button" class="btn-add" onclick="tambahItem()">+ Tambah</button>
+</div>
+
+<div class="cart-container" id="cartContainer">
+    <div class="empty-cart">Belum ada item yang ditambahkan</div>
+</div>
+
+<div class="total" id="total">Total: Rp 0</div>
+
+<button class="btn-clear" onclick="clearAll()">Hapus Semua</button>
+</div>
+
+<script>
+let cart = [];
+
+function getItemName(value) {
+    const select = document.getElementById("item");
+    return select.options[select.selectedIndex].text;
+}
+
+function tambahItem() {
+    const harga = parseInt(document.getElementById("item").value);
+    const qty = parseInt(document.getElementById("qty").value);
+    
+    if (harga === 0) {
+        alert("Silakan pilih item terlebih dahulu!");
+        return;
+    }
+    
+    if (qty < 1) {
+        alert("Jumlah minimal 1!");
+        return;
+    }
+    
+    const itemName = getItemName(harga);
+    const subtotal = harga * qty;
+    
+    cart.push({
+        name: itemName,
+        harga: harga,
+        qty: qty,
+        subtotal: subtotal
+    });
+    
+    updateCart();
+    updateTotal();
+    
+    // Reset form
+    document.getElementById("item").value = "0";
+    document.getElementById("qty").value = 1;
+}
+
+function hapusItem(index) {
+    cart.splice(index, 1);
+    updateCart();
+    updateTotal();
+}
+
+function clearAll() {
+    if (cart.length === 0) return;
+    
+    if (confirm("Yakin ingin menghapus semua item?")) {
+        cart = [];
+        updateCart();
+        updateTotal();
+    }
+}
+
+function updateCart() {
+    const container = document.getElementById("cartContainer");
+    
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-cart">Belum ada item yang ditambahkan</div>';
+        return;
+    }
+    
+    container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-detail">${item.qty} x Rp ${item.harga.toLocaleString("id-ID")}</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <span class="cart-item-price">Rp ${item.subtotal.toLocaleString("id-ID")}</span>
+                <button class="btn-delete" onclick="hapusItem(${index})">Hapus</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateTotal() {
+    const total = cart.reduce((sum, item) => sum + item.subtotal, 0);
+    document.getElementById("total").innerText = 
+        "Total: Rp " + total.toLocaleString("id-ID");
+}
+
+// Pastikan input field bisa digunakan
+document.addEventListener('DOMContentLoaded', function() {
+    const qtyInput = document.getElementById("qty");
+    
+    if (!qtyInput) return;
+    
+    // Pastikan input bisa di-focus
+    qtyInput.addEventListener('focus', function() {
+        this.style.borderColor = '#ff1493';
+        this.style.boxShadow = '0 0 0 3px rgba(255, 20, 147, 0.3), 0 4px 12px rgba(255, 20, 147, 0.4)';
+    });
+    
+    qtyInput.addEventListener('blur', function() {
+        this.style.borderColor = '#000';
+        this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+    });
+    
+    // Enter key untuk tambah item
+    qtyInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            tambahItem();
+        }
+    });
+    
+    // Pastikan input bisa diklik dan diinput
+    qtyInput.addEventListener('mousedown', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Pastikan input bisa menerima input dari keyboard
+    qtyInput.addEventListener('keydown', function(e) {
+        // Biarkan semua key kecuali Enter
+        if (e.key !== "Enter") {
+            e.stopPropagation();
+        }
+    });
+    
+    // Force enable input
+    qtyInput.removeAttribute('readonly');
+    qtyInput.removeAttribute('disabled');
+    qtyInput.style.pointerEvents = 'auto';
+    qtyInput.style.userSelect = 'text';
+});
+</script>
+
+</body>
+</html>
