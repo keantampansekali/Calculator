@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Kalkulator WARUNG BEEPEL</title>
 <style>
 * {
@@ -14,10 +17,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #000000;
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(255, 20, 147, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255, 182, 193, 0.08) 0%, transparent 50%);
     color: #fff;
     display: flex;
     justify-content: center;
@@ -28,18 +27,46 @@ body {
     overflow: hidden;
 }
 
+.bg-overlay-left,
+.bg-overlay-right {
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+}
+
+.bg-overlay-left {
+    left: 0;
+    /* Ganti dengan path foto pertama atau base64 */
+    /* background-image: url('foto1.jpg'); */
+}
+
+.bg-overlay-right {
+    right: 0;
+    /* Ganti dengan path foto kedua atau base64 */
+    /* background-image: url('foto2.jpg'); */
+}
+
 body::before {
     content: '';
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 20, 147, 0.03) 2px, rgba(255, 20, 147, 0.03) 4px);
-    animation: gridMove 20s linear infinite;
+        linear-gradient(90deg, 
+            rgba(0, 0, 0, 0.5) 0%, 
+            rgba(0, 0, 0, 0.3) 50%, 
+            rgba(0, 0, 0, 0.5) 100%);
+    z-index: 2;
     pointer-events: none;
-    z-index: 0;
 }
 
 @keyframes gridMove {
@@ -59,7 +86,7 @@ body::before {
         inset 0 0 0 3px rgba(255, 20, 147, 0.1);
     color: #000;
     position: relative;
-    z-index: 1;
+    z-index: 10;
     border: 2px solid rgba(255, 20, 147, 0.2);
     animation: boxGlow 3s ease-in-out infinite alternate;
 }
@@ -116,6 +143,9 @@ select {
     cursor: pointer;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    touch-action: manipulation;
+    min-height: 44px;
 }
 
 input[type="number"] {
@@ -132,6 +162,9 @@ input[type="number"] {
     appearance: textfield;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    touch-action: manipulation;
+    min-height: 44px;
 }
 
 select:hover {
@@ -217,6 +250,9 @@ button {
     justify-content: center;
     white-space: nowrap;
     text-overflow: clip;
+    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.3);
+    touch-action: manipulation;
+    min-height: 44px;
 }
 
 button:not(.btn-add) {
@@ -368,17 +404,16 @@ button:not(.btn-add) {
 
 .cart-item-detail {
     font-size: 13px;
-    color: #ff69b4;
+    color: #ffffff;
     margin-top: 6px;
     font-weight: 600;
 }
 
 .cart-item-price {
     font-weight: 800;
-    color: #ff1493;
+    color: #ffffff;
     font-size: 16px;
     margin-right: 12px;
-    text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
 }
 
 .btn-delete {
@@ -479,15 +514,322 @@ button:not(.btn-add) {
     border-color: #ff1493 !important;
     box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3), 0 4px 12px rgba(255, 20, 147, 0.4) !important;
 }
+
+/* Searchable Dropdown Styles */
+.searchable-select {
+    position: relative;
+    width: 100%;
+    margin: 8px 0 20px 0;
+}
+
+.searchable-select-input {
+    width: 100%;
+    padding: 14px 18px;
+    padding-right: 45px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+    cursor: text;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(255, 20, 147, 0.2);
+    touch-action: manipulation;
+    min-height: 44px;
+}
+
+.searchable-select-input:hover {
+    border-color: #ff1493;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2), 0 4px 12px rgba(255, 20, 147, 0.3);
+    transform: translateY(-2px);
+}
+
+.searchable-select-input:focus {
+    outline: none;
+    border-color: #ff1493;
+    box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.3), 0 4px 12px rgba(255, 20, 147, 0.4);
+}
+
+.searchable-select-arrow {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #000;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.searchable-select.open .searchable-select-arrow {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.searchable-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 2px solid #ff1493;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-top: -2px;
+}
+
+.searchable-select.open .searchable-select-dropdown {
+    display: block;
+}
+
+.searchable-select-option {
+    padding: 12px 18px;
+    cursor: pointer;
+    color: #000;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.searchable-select-option:last-child {
+    border-bottom: none;
+}
+
+.searchable-select-option:hover {
+    background: rgba(255, 20, 147, 0.1);
+    color: #ff1493;
+}
+
+.searchable-select-option.selected {
+    background: rgba(255, 20, 147, 0.2);
+    color: #ff1493;
+    font-weight: 700;
+}
+
+.searchable-select-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.searchable-select-dropdown::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.searchable-select-dropdown::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff1493, #ff69b4);
+    border-radius: 10px;
+}
+
+.searchable-select-dropdown::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff69b4, #ff1493);
+}
+
+.searchable-select-input::placeholder {
+    color: #999;
+    font-weight: 400;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .box {
+        max-width: 100%;
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+    
+    h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+    
+    label {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    select,
+    input[type="number"],
+    .searchable-select-input {
+        padding: 12px 15px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+    
+    .input-group {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .input-group input[type="number"] {
+        padding: 12px 15px;
+        font-size: 15px;
+    }
+    
+    .input-group .btn-add {
+        min-width: 120px;
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+    
+    button {
+        padding: 12px 20px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+    
+    .btn-add {
+        min-height: 48px;
+        line-height: 1.3;
+    }
+    
+    .total {
+        padding: 18px;
+        font-size: 22px;
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+    
+    .cart-container {
+        max-height: 250px;
+        margin-top: 20px;
+    }
+    
+    .cart-item {
+        padding: 12px 15px;
+        margin: 8px 0;
+        border-radius: 10px;
+    }
+    
+    .cart-item-name {
+        font-size: 14px;
+    }
+    
+    .cart-item-detail {
+        font-size: 12px;
+        margin-top: 4px;
+    }
+    
+    .cart-item-price {
+        font-size: 15px;
+        margin-right: 8px;
+    }
+    
+    .btn-delete {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .empty-cart {
+        padding: 20px;
+        font-size: 13px;
+    }
+    
+    .searchable-select-dropdown {
+        max-height: 250px;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .searchable-select-option {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .box {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+    
+    h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+    
+    label {
+        font-size: 12px;
+    }
+    
+    select,
+    input[type="number"],
+    .searchable-select-input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-group input[type="number"] {
+        width: 100%;
+    }
+    
+    .input-group .btn-add {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    button {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+    
+    .total {
+        padding: 16px;
+        font-size: 20px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .cart-item > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .cart-item-price {
+        margin-right: 0;
+    }
+}
 </style>
 </head>
 <body>
+<div class="bg-overlay-left" id="bgLeft"></div>
+<div class="bg-overlay-right" id="bgRight"></div>
 
 <div class="box">
 <h2>WARUNG BEEPEL</h2>
 
 <label>Pilih Item:</label>
-<select id="item">
+<div class="searchable-select" id="searchableSelect">
+    <input type="text" class="searchable-select-input" id="itemInput" placeholder="Cari atau pilih item..." autocomplete="off">
+    <span class="searchable-select-arrow">▼</span>
+    <div class="searchable-select-dropdown" id="itemDropdown"></div>
+</div>
+
+<select id="item" style="display: none;">
 <option value="0">Pilih Item</option>
 
 <option value="7000">PISTOL KACANG</option>
@@ -503,7 +845,6 @@ button:not(.btn-add) {
 <option value="78000">KVR</option>
 <option value="92500">BLACK REVOLVER</option>
 <option value="180000">ASSAULT RIFLE</option>
-<option value="175000">Virtus</option>
 
 <option value="900">AMMO .50</option>
 <option value="2700">AMMO 9MM</option>
@@ -550,6 +891,127 @@ button:not(.btn-add) {
 <script>
 let cart = [];
 
+// Searchable Dropdown Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById("item");
+    const itemInput = document.getElementById("itemInput");
+    const itemDropdown = document.getElementById("itemDropdown");
+    const searchableSelect = document.getElementById("searchableSelect");
+    
+    // Build dropdown options from select
+    function buildDropdown(filter = '') {
+        itemDropdown.innerHTML = '';
+        const options = Array.from(select.options);
+        
+        options.forEach((option, index) => {
+            if (option.value === "0") return; // Skip placeholder
+            
+            const text = option.text.toLowerCase();
+            const searchTerm = filter.toLowerCase();
+            
+            // Filter options based on search
+            if (!filter || text.includes(searchTerm)) {
+                const div = document.createElement('div');
+                div.className = 'searchable-select-option';
+                div.textContent = option.text;
+                div.dataset.value = option.value;
+                
+                div.addEventListener('click', function() {
+                    select.value = option.value;
+                    itemInput.value = option.text;
+                    searchableSelect.classList.remove('open');
+                    itemInput.classList.remove('searchable-select-placeholder');
+                });
+                
+                itemDropdown.appendChild(div);
+            }
+        });
+        
+        // If no results
+        if (itemDropdown.children.length === 0 && filter) {
+            const div = document.createElement('div');
+            div.className = 'searchable-select-option';
+            div.textContent = 'Tidak ada item yang ditemukan';
+            div.style.color = '#999';
+            div.style.cursor = 'default';
+            itemDropdown.appendChild(div);
+        }
+    }
+    
+    // Initial build
+    buildDropdown();
+    
+    // Open dropdown on focus
+    itemInput.addEventListener('focus', function() {
+        searchableSelect.classList.add('open');
+        if (!itemInput.value || itemInput.value === '') {
+            buildDropdown('');
+        } else {
+            buildDropdown(itemInput.value);
+        }
+    });
+    
+    // Search on input
+    itemInput.addEventListener('input', function() {
+        buildDropdown(itemInput.value);
+        searchableSelect.classList.add('open');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchableSelect.contains(e.target)) {
+            searchableSelect.classList.remove('open');
+            // Update input with selected value
+            if (select.value !== "0") {
+                const selectedOption = select.options[select.selectedIndex];
+                itemInput.value = selectedOption.text;
+            } else {
+                itemInput.value = '';
+            }
+        }
+    });
+    
+    // Keyboard navigation
+    itemInput.addEventListener('keydown', function(e) {
+        const options = itemDropdown.querySelectorAll('.searchable-select-option:not([style*="cursor: default"])');
+        let currentIndex = -1;
+        
+        options.forEach((opt, idx) => {
+            if (opt.classList.contains('selected')) {
+                currentIndex = idx;
+            }
+        });
+        
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            currentIndex = (currentIndex + 1) % options.length;
+            options.forEach(opt => opt.classList.remove('selected'));
+            if (options[currentIndex]) {
+                options[currentIndex].classList.add('selected');
+                options[currentIndex].scrollIntoView({ block: 'nearest' });
+            }
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            currentIndex = currentIndex <= 0 ? options.length - 1 : currentIndex - 1;
+            options.forEach(opt => opt.classList.remove('selected'));
+            if (options[currentIndex]) {
+                options[currentIndex].classList.add('selected');
+                options[currentIndex].scrollIntoView({ block: 'nearest' });
+            }
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            const selected = itemDropdown.querySelector('.searchable-select-option.selected');
+            if (selected && selected.dataset.value) {
+                select.value = selected.dataset.value;
+                itemInput.value = selected.textContent;
+                searchableSelect.classList.remove('open');
+            }
+        } else if (e.key === 'Escape') {
+            searchableSelect.classList.remove('open');
+        }
+    });
+});
+
 function getItemName(value) {
     const select = document.getElementById("item");
     return select.options[select.selectedIndex].text;
@@ -585,6 +1047,15 @@ function tambahItem() {
     // Reset form
     document.getElementById("item").value = "0";
     document.getElementById("qty").value = 1;
+    const itemInput = document.getElementById("itemInput");
+    if (itemInput) {
+        itemInput.value = '';
+        itemInput.placeholder = 'Cari atau pilih item...';
+    }
+    const searchableSelect = document.getElementById("searchableSelect");
+    if (searchableSelect) {
+        searchableSelect.classList.remove('open');
+    }
 }
 
 function hapusItem(index) {
@@ -674,6 +1145,32 @@ document.addEventListener('DOMContentLoaded', function() {
     qtyInput.removeAttribute('disabled');
     qtyInput.style.pointerEvents = 'auto';
     qtyInput.style.userSelect = 'text';
+});
+
+// Background Photo Setup
+// Cara 1: Simpan foto dengan nama foto1.jpg dan foto2.jpg di folder yang sama dengan index.html
+// Cara 2: Ganti URL di bawah dengan path foto Anda
+// Cara 3: Gunakan base64 (convert foto ke base64 online, lalu paste di bawah)
+
+const bgLeft = document.getElementById('bgLeft');
+const bgRight = document.getElementById('bgRight');
+
+
+bgLeft.style.backgroundImage = "url('IMG_20260203_061749.png')";
+bgRight.style.backgroundImage = "url('Screenshot_20260203-040544.jpg')";
+
+// Load dari localStorage jika sudah pernah di-set
+window.addEventListener('DOMContentLoaded', function() {
+    const savedBgLeft = localStorage.getItem('bgLeft');
+    const savedBgRight = localStorage.getItem('bgRight');
+    
+    if (savedBgLeft) {
+        bgLeft.style.backgroundImage = `url(${savedBgLeft})`;
+    }
+    
+    if (savedBgRight) {
+        bgRight.style.backgroundImage = `url(${savedBgRight})`;
+    }
 });
 </script>
 
