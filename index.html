@@ -69,6 +69,68 @@ body::before {
     pointer-events: none;
 }
 
+.logo-left,
+.logo-right {
+    position: fixed;
+    top: 20px;
+    width: 135px;
+    height: 135px;
+    z-index: 15;
+    object-fit: contain;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.logo-left {
+    left: 20px;
+}
+
+.logo-right {
+    right: 20px;
+}
+
+.logo-left:hover,
+.logo-right:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(255, 20, 147, 0.6));
+}
+
+@media screen and (max-width: 768px) {
+    .logo-left,
+    .logo-right {
+        width: 75px;
+        height: 75px;
+        top: 15px;
+    }
+    
+    .logo-left {
+        left: 15px;
+    }
+    
+    .logo-right {
+        right: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .logo-left,
+    .logo-right {
+        width: 60px;
+        height: 60px;
+        top: 10px;
+    }
+    
+    .logo-left {
+        left: 10px;
+    }
+    
+    .logo-right {
+        right: 10px;
+    }
+}
+
 @keyframes gridMove {
     0% { transform: translate(0, 0); }
     100% { transform: translate(50px, 50px); }
@@ -819,6 +881,13 @@ button:not(.btn-add) {
 <div class="bg-overlay-left" id="bgLeft"></div>
 <div class="bg-overlay-right" id="bgRight"></div>
 
+<!-- Logo di pojok kiri dan kanan -->
+<!-- Cara 1: Simpan gambar dengan nama logo.png di folder yang sama dengan index.html -->
+<!-- Cara 2: Ganti src dengan URL hosting (contoh: https://i.imgur.com/xxxxx.png) -->
+<!-- Cara 3: Gunakan base64 (convert gambar ke base64 online, lalu paste di src) -->
+<img src="logo.png" alt="Logo" class="logo-left" id="logoLeft">
+<img src="logo.png" alt="Logo" class="logo-right" id="logoRight">
+
 <div class="box">
 <h2>WARUNG BEEPEL</h2>
 
@@ -1206,6 +1275,87 @@ window.addEventListener('DOMContentLoaded', function() {
     if (savedBgRight && savedBgRight.startsWith('http')) {
         bgRight.style.backgroundImage = `url('${savedBgRight}')`;
     }
+});
+
+
+const logoLeft = document.getElementById('logoLeft');
+const logoRight = document.getElementById('logoRight');
+
+
+const logoUrl = 'https://imgur.com/Oj2UDMd'; // Ganti dengan direct link yang benar
+
+// Fungsi untuk convert URL Imgur album ke direct link
+function getDirectImgurUrl(url) {
+    if (!url) return null;
+    
+    // Jika sudah direct link (mengandung i.imgur.com)
+    if (url.includes('i.imgur.com')) {
+        return url;
+    }
+    
+    // Jika URL album Imgur (imgur.com/a/ atau imgur.com/)
+    if (url.includes('imgur.com/a/')) {
+        const id = url.split('/a/')[1].split('/')[0].split('?')[0];
+        // Coba dengan .jpg dulu, jika error akan coba .png
+        return `https://i.imgur.com/${id}.jpg`;
+    }
+    
+    if (url.includes('imgur.com/')) {
+        const id = url.split('imgur.com/')[1].split('/')[0].split('?')[0];
+        return `https://i.imgur.com/${id}.jpg`;
+    }
+    
+    return url;
+}
+
+// Set logo dengan URL atau file lokal
+const directLogoUrl = getDirectImgurUrl(logoUrl);
+if (directLogoUrl && directLogoUrl.startsWith('http')) {
+    logoLeft.src = directLogoUrl;
+    logoRight.src = directLogoUrl;
+    localStorage.setItem('logoUrl', directLogoUrl);
+} else if (logoUrl) {
+    // Jika menggunakan file lokal, coba load
+    logoLeft.src = logoUrl;
+    logoRight.src = logoUrl;
+}
+
+// Load dari localStorage jika sudah pernah di-set
+window.addEventListener('DOMContentLoaded', function() {
+    const savedLogoUrl = localStorage.getItem('logoUrl');
+    
+    if (savedLogoUrl && savedLogoUrl.startsWith('http')) {
+        logoLeft.src = savedLogoUrl;
+        logoRight.src = savedLogoUrl;
+    }
+    
+    // Handle error jika gambar tidak ditemukan
+    let logoLeftTriedPng = false;
+    let logoRightTriedPng = false;
+    
+    logoLeft.addEventListener('error', function() {
+        const currentSrc = this.src;
+        // Jika gagal load .jpg, coba .png
+        if (currentSrc.includes('.jpg') && !logoLeftTriedPng) {
+            logoLeftTriedPng = true;
+            this.src = currentSrc.replace('.jpg', '.png');
+        } else {
+            console.log('Logo kiri tidak ditemukan. Pastikan URL benar atau file logo.png ada di folder yang sama.');
+            this.style.display = 'none';
+        }
+    });
+    
+    logoRight.addEventListener('error', function() {
+        const currentSrc = this.src;
+        // Jika gagal load .jpg, coba .png
+        if (currentSrc.includes('.jpg') && !logoRightTriedPng) {
+            logoRightTriedPng = true;
+            this.src = currentSrc.replace('.jpg', '.png');
+        } else {
+            console.log('Logo kanan tidak ditemukan. Pastikan URL benar atau file logo.png ada di folder yang sama.');
+            this.style.display = 'none';
+        }
+    });
 });
 </script>
 
