@@ -378,6 +378,10 @@ button:not(.btn-add) {
     line-height: 1.4;
     overflow: visible !important;
     text-overflow: clip;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .btn-add::before {
@@ -390,9 +394,10 @@ button:not(.btn-add) {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
     transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
+    /* transition: width 0.6s, height 0.6s; */
     z-index: 0;
     pointer-events: none;
+    display: none;
 }
 
 .btn-add > *,
@@ -410,7 +415,7 @@ button:not(.btn-add) {
 }
 
 .btn-add:hover {
-    transform: translateY(-3px);
+    /* transform: translateY(-3px); */
     box-shadow: 
         0 6px 20px rgba(255, 20, 147, 0.6),
         0 4px 12px rgba(0, 0, 0, 0.3);
@@ -418,13 +423,22 @@ button:not(.btn-add) {
 }
 
 .btn-add:hover::before {
-    width: 300px;
-    height: 300px;
+    /* width: 300px;
+    height: 300px; */
+    display: none;
+}
+
+.btn-add:focus {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-add:active {
-    transform: translateY(-1px);
+    /* transform: translateY(-1px); */
     color: #fff !important;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 .btn-clear {
