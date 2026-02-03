@@ -735,6 +735,20 @@ button:not(.btn-add) {
     font-weight: 700;
 }
 
+.searchable-select-category {
+    padding: 6px 18px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #666;
+    background: rgba(0, 0, 0, 0.03);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: default;
+    pointer-events: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
 .searchable-select-dropdown::-webkit-scrollbar {
     width: 8px;
 }
@@ -1032,12 +1046,102 @@ document.addEventListener('DOMContentLoaded', function() {
     function buildDropdown(filter = '') {
         itemDropdown.innerHTML = '';
         const options = Array.from(select.options);
+        let isFirstSenjata = true;
+        let hasAddedSenjataCategory = false;
+        let isFirstAmmo = true;
+        let hasAddedAmmoCategory = false;
+        let isFirstVest = true;
+        let hasAddedVestCategory = false;
+        let isFirstDrugs = true;
+        let hasAddedDrugsCategory = false;
+        let isFirstAttachments = true;
+        let hasAddedAttachmentsCategory = false;
         
         options.forEach((option, index) => {
             if (option.value === "0") return; // Skip placeholder
             
             const text = option.text.toLowerCase();
             const searchTerm = filter.toLowerCase();
+            
+            // Check if this is the first senjata item (PISTOL KACANG)
+            const isPistolKacang = option.text === "PISTOL KACANG";
+            
+            // Check if this is the first ammo item (AMMO .50)
+            const isAmmo50 = option.text === "AMMO .50";
+            
+            // Check if this is the first vest item (VEST MERAH)
+            const isVestMerah = option.text === "VEST MERAH";
+            
+            // Check if this is the first drugs item (WEED BAG)
+            const isWeedBag = option.text === "WEED BAG";
+            
+            // Check if this is the first attachments item (TACTICAL FLASHLIGHT)
+            const isTacticalFlashlight = option.text === "TACTICAL FLASHLIGHT";
+            
+            // Add category before first senjata item
+            if (isPistolKacang && isFirstSenjata && !hasAddedSenjataCategory) {
+                // Check if we should show category (no filter or filter matches category)
+                if (!filter || "senjata".includes(searchTerm) || text.includes(searchTerm)) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'searchable-select-category';
+                    categoryDiv.textContent = 'SENJATA';
+                    itemDropdown.appendChild(categoryDiv);
+                    hasAddedSenjataCategory = true;
+                }
+                isFirstSenjata = false;
+            }
+            
+            // Add category before first ammo item
+            if (isAmmo50 && isFirstAmmo && !hasAddedAmmoCategory) {
+                // Check if we should show category (no filter or filter matches category)
+                if (!filter || "ammo".includes(searchTerm) || text.includes(searchTerm)) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'searchable-select-category';
+                    categoryDiv.textContent = 'AMMO';
+                    itemDropdown.appendChild(categoryDiv);
+                    hasAddedAmmoCategory = true;
+                }
+                isFirstAmmo = false;
+            }
+            
+            // Add category before first vest item
+            if (isVestMerah && isFirstVest && !hasAddedVestCategory) {
+                // Check if we should show category (no filter or filter matches category)
+                if (!filter || "vest".includes(searchTerm) || text.includes(searchTerm)) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'searchable-select-category';
+                    categoryDiv.textContent = 'VEST';
+                    itemDropdown.appendChild(categoryDiv);
+                    hasAddedVestCategory = true;
+                }
+                isFirstVest = false;
+            }
+            
+            // Add category before first drugs item
+            if (isWeedBag && isFirstDrugs && !hasAddedDrugsCategory) {
+                // Check if we should show category (no filter or filter matches category)
+                if (!filter || "drugs".includes(searchTerm) || text.includes(searchTerm)) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'searchable-select-category';
+                    categoryDiv.textContent = 'DRUGS';
+                    itemDropdown.appendChild(categoryDiv);
+                    hasAddedDrugsCategory = true;
+                }
+                isFirstDrugs = false;
+            }
+            
+            // Add category before first attachments item
+            if (isTacticalFlashlight && isFirstAttachments && !hasAddedAttachmentsCategory) {
+                // Check if we should show category (no filter or filter matches category)
+                if (!filter || "attachments".includes(searchTerm) || text.includes(searchTerm)) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'searchable-select-category';
+                    categoryDiv.textContent = 'ATTACHMENTS';
+                    itemDropdown.appendChild(categoryDiv);
+                    hasAddedAttachmentsCategory = true;
+                }
+                isFirstAttachments = false;
+            }
             
             // Filter options based on search
             if (!filter || text.includes(searchTerm)) {
@@ -1103,7 +1207,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Keyboard navigation
     itemInput.addEventListener('keydown', function(e) {
-        const options = itemDropdown.querySelectorAll('.searchable-select-option:not([style*="cursor: default"])');
+        const options = itemDropdown.querySelectorAll('.searchable-select-option:not([style*="cursor: default"]):not(.searchable-select-category)');
         let currentIndex = -1;
         
         options.forEach((opt, idx) => {
@@ -1277,39 +1381,10 @@ document.addEventListener('DOMContentLoaded', function() {
     qtyInput.style.userSelect = 'text';
 });
 
-// Background Photo Setup
-// Cara 1: Simpan foto dengan nama foto1.jpg dan foto2.jpg di folder yang sama dengan index.html
-// Cara 2: Ganti URL di bawah dengan path foto Anda
-// Cara 3: Gunakan base64 (convert foto ke base64 online, lalu paste di bawah)
-
 const bgLeft = document.getElementById('bgLeft');
 const bgRight = document.getElementById('bgRight');
 
-// ============================================
-// SETUP FOTO DENGAN URL HOSTING
-// ============================================
-// Cara mendapatkan URL:
-// 1. Upload foto ke Imgur: https://imgur.com/upload
-//    - Upload IMG_20260203_061749.png
-//    - Klik kanan foto → "Copy image address" atau ambil Direct Link
-//    - URL akan seperti: https://i.imgur.com/xxxxx.png
-// 2. Upload foto kedua ke Imgur
-//    - Upload Screenshot_20260203-040544.jpg
-//    - Copy Direct Link
-// 3. Paste URL di bawah
-// ============================================
 
-// ============================================
-// CARA DAPATKAN DIRECT LINK YANG BENAR:
-// ============================================
-// 1. Buka https://imgur.com/PeCGE83 di browser
-// 2. Klik kanan pada foto → "Copy image address"
-//    ATAU klik foto → klik kanan → "Open image in new tab" → copy URL dari tab baru
-// 3. URL yang benar: https://i.imgur.com/PeCGE83.png (ada "i." di depan dan ekstensi .png/.jpg)
-// 4. Ulangi untuk foto kedua: https://imgur.com/mrsDWtQ
-// ============================================
-
-// PASTE DIRECT LINK YANG BENAR DI SINI (harus ada "i." dan ekstensi file):
 const foto1Url = 'https://i.imgur.com/PeCGE83.png'; // Ganti dengan direct link yang benar
 const foto2Url = 'https://i.imgur.com/mrsDWtQ.jpg'; // Ganti dengan direct link yang benar
 
@@ -1343,18 +1418,18 @@ const logoLeft = document.getElementById('logoLeft');
 const logoRight = document.getElementById('logoRight');
 
 
-const logoUrl = 'https://imgur.com/Oj2UDMd'; // Ganti dengan direct link yang benar
+const logoUrl = 'https://imgur.com/Oj2UDMd'; 
 
-// Fungsi untuk convert URL Imgur album ke direct link
+
 function getDirectImgurUrl(url) {
     if (!url) return null;
     
-    // Jika sudah direct link (mengandung i.imgur.com)
+    
     if (url.includes('i.imgur.com')) {
         return url;
     }
     
-    // Jika URL album Imgur (imgur.com/a/ atau imgur.com/)
+  
     if (url.includes('imgur.com/a/')) {
         const id = url.split('/a/')[1].split('/')[0].split('?')[0];
         // Coba dengan .jpg dulu, jika error akan coba .png
