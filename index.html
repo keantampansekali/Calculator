@@ -468,28 +468,103 @@ button:not(.btn-add) {
     margin-top: 25px;
     max-height: 300px;
     overflow-y: auto;
+    position: relative;
+    padding: 2px;
+    background: linear-gradient(180deg, 
+        rgba(255, 20, 147, 0.1) 0%, 
+        transparent 10%, 
+        transparent 90%, 
+        rgba(255, 20, 147, 0.1) 100%);
+    border-radius: 10px;
 }
 
 .cart-item {
     background: #000;
     padding: 15px 18px;
     margin: 10px 0;
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 2px solid rgba(255, 20, 147, 0.4);
     border-left: 4px solid #ff1493;
-    border: 2px solid rgba(255, 20, 147, 0.3);
-    /* animation: slideIn 0.3s ease; */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    /* transition: all 0.3s ease; */
+    box-shadow: 
+        0 0 15px rgba(255, 20, 147, 0.3),
+        inset 0 0 20px rgba(255, 20, 147, 0.05),
+        0 2px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s ease, techPulse 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+    background-image: 
+        linear-gradient(rgba(255, 20, 147, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 20, 147, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.cart-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 20, 147, 0.2), transparent);
+    animation: scanline 3s linear infinite;
+    pointer-events: none;
+}
+
+.cart-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        rgba(255, 20, 147, 0.1) 0%, 
+        transparent 50%, 
+        rgba(255, 20, 147, 0.1) 100%);
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .cart-item:hover {
     border-color: #ff1493;
-    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.4);
-    /* transform: translateX(5px); */
-    /* transition: none; */
+    border-left-width: 5px;
+    box-shadow: 
+        0 0 25px rgba(255, 20, 147, 0.6),
+        0 0 40px rgba(255, 20, 147, 0.3),
+        inset 0 0 30px rgba(255, 20, 147, 0.1),
+        0 4px 15px rgba(0, 0, 0, 0.6);
+    transform: translateX(3px) scale(1.01);
+    background-image: 
+        linear-gradient(rgba(255, 20, 147, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 20, 147, 0.08) 1px, transparent 1px);
+}
+
+@keyframes techPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 15px rgba(255, 20, 147, 0.3),
+            inset 0 0 20px rgba(255, 20, 147, 0.05),
+            0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 
+            0 0 20px rgba(255, 20, 147, 0.4),
+            inset 0 0 25px rgba(255, 20, 147, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@keyframes scanline {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
 @keyframes slideIn {
@@ -505,6 +580,8 @@ button:not(.btn-add) {
 
 .cart-item-info {
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .cart-item-name {
@@ -513,15 +590,25 @@ button:not(.btn-add) {
     color: #fff;
     font-size: 15px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    text-shadow: 
+        0 0 10px rgba(255, 20, 147, 0.5),
+        0 0 20px rgba(255, 20, 147, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
 }
 
 .cart-item-detail {
     font-size: 13px;
     font-family: 'Space Grotesk', sans-serif;
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.9);
     margin-top: 6px;
     font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 20, 147, 0.4);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.3px;
 }
 
 .cart-item-price {
@@ -530,47 +617,128 @@ button:not(.btn-add) {
     color: #ffffff;
     font-size: 16px;
     margin-right: 12px;
+    text-shadow: 
+        0 0 12px rgba(255, 20, 147, 0.6),
+        0 0 24px rgba(255, 20, 147, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+    animation: priceGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes priceGlow {
+    0% {
+        text-shadow: 
+            0 0 12px rgba(255, 20, 147, 0.6),
+            0 0 24px rgba(255, 20, 147, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    100% {
+        text-shadow: 
+            0 0 16px rgba(255, 20, 147, 0.8),
+            0 0 32px rgba(255, 20, 147, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.8);
+    }
 }
 
 .btn-delete {
-    background: #ff1493;
+    background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
     color: #fff;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 12px;
     font-weight: 700;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 6px rgba(255, 20, 147, 0.3);
+    box-shadow: 
+        0 0 15px rgba(255, 20, 147, 0.5),
+        0 2px 6px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     -webkit-tap-highlight-color: transparent;
     outline: none;
     -webkit-user-select: none;
     user-select: none;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.btn-delete::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
 }
 
 .btn-delete:hover {
-    background: #ff69b4;
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.5);
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    transform: scale(1.08);
+    box-shadow: 
+        0 0 25px rgba(255, 20, 147, 0.7),
+        0 0 40px rgba(255, 20, 147, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-delete:hover::before {
+    left: 100%;
 }
 
 .btn-delete:active {
-    transform: scale(0.98);
+    transform: scale(0.95);
+    box-shadow: 
+        0 0 10px rgba(255, 20, 147, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .empty-cart {
     text-align: center;
-    color: #666;
+    color: rgba(255, 255, 255, 0.6);
     padding: 25px;
     font-family: 'Space Grotesk', sans-serif;
     font-style: italic;
     font-size: 14px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    border: 2px dashed rgba(255, 20, 147, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: 2px dashed rgba(255, 20, 147, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
+    background-image: 
+        linear-gradient(rgba(255, 20, 147, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 20, 147, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.empty-cart::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 20, 147, 0.05) 50%, transparent 70%);
+    animation: emptyScan 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes emptyScan {
+    0% {
+        transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%);
+    }
 }
 
 .cart-container::-webkit-scrollbar {
